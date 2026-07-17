@@ -82,4 +82,33 @@ impl <'de> Deserializer <'de> {
 		// unimplemented!()
 		Err(Error::NotImplemented(String::from("signed integer")))
 	}
+
+	fn parse_string (&mut self) -> Result<&'de str, Error> {
+		let has_quotes: bool;
+		if self.next_char()? != '"' {
+			// return Err(Error::ExpectedString)
+			has_quotes = true
+		} else {
+			has_quotes = false
+		};
+
+		let result = {
+			if has_quotes {
+				self.input.find('"')
+			} else {
+				self.input.find("\n")
+			}
+		};
+
+		match result {
+			Some(v)	=> {
+				let s = &self.input[..v];
+				self.input = &self.input[v + 1..];
+				Ok(s)
+			}
+			None	=> {
+				Err(Error::EOF)
+			}
+		}
+	}
 }

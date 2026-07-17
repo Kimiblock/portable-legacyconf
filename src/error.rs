@@ -18,6 +18,9 @@ pub enum Error {
 
 	#[error("not implemented: {0}")]
 	NotImplemented(String),
+
+	#[error("expected String with double quote")]
+	ExpectedString,
 }
 
 impl serde::de::Error for Error {
