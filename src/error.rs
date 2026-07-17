@@ -15,6 +15,9 @@ pub enum Error {
 
 	#[error("expected integer")]
 	ExpectedInteger,
+
+	#[error("not implemented: {0}")]
+	NotImplemented(String),
 }
 
 impl serde::de::Error for Error {

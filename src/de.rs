@@ -75,4 +75,11 @@ impl <'de> Deserializer <'de> {
 			}
 		}
 	}
+
+	fn parse_signed<T>(&mut self) -> Result<T, Error>
+		where T: Neg<Output = T> + AddAssign<T> + MulAssign<T> + From<i8>,
+	{
+		// unimplemented!()
+		Err(Error::NotImplemented(String::from("signed integer")))
+	}
 }
