@@ -12,6 +12,9 @@ pub enum Error {
 
 	#[error("expected boolean")]
 	ExpectedBoolean,
+
+	#[error("expected integer")]
+	ExpectedInteger,
 }
 
 impl serde::de::Error for Error {
