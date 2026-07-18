@@ -143,7 +143,7 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	fn deserialize_any<V>(self, visitor: V) -> Result<V::Value, Self::Error>
 		where V: Visitor<'de>
 	{
-		self.skip_whitespaces_and_comments();
+		self.skip_whitespaces_and_comments()?;
 		match self.peek_char()? {
 			'"'	=> {
 				let s = self.parse_string()?;
@@ -163,5 +163,15 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 				return Err(Error::SyntaxError);
 			}
 		}
+	}
+
+	fn deserialize_bool<V>(self, visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		self.skip_whitespaces_and_comments()?;
+		visitor.visit_bool(
+			self.parse_bool()?
+		)
 	}
 }
