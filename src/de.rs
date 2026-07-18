@@ -121,7 +121,21 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	fn deserialize_any<V>(self, visitor: V) -> Result<V::Value, Self::Error>
 		where V: Visitor<'de>
 	{
-		match self.peek_char() {
+		match self.peek_char()? {
+			'"'	=> {
+				let s = self.parse_string()?;
+				match s {
+					"true"	=> {
+						visitor.visit_bool(true)
+					}
+					"false"	=> {
+						visitor.visit_bool(false)
+					}
+					_	=> {
+						visitor.visit_str(s)
+					}
+				}
+			}
 			_	=> {
 				return Err(Error::SyntaxError);
 			}
