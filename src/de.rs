@@ -174,4 +174,14 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 			self.parse_bool()?
 		)
 	}
+
+	fn deserialize_i8<V>(self, visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		self.skip_whitespaces_and_comments()?;
+		visitor.visit_i8(
+			self.parse_signed()?
+		)
+	}
 }
