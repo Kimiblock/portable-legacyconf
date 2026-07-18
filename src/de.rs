@@ -280,4 +280,11 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	{
 		visitor.visit_borrowed_str(self.parse_string()?)
 	}
+
+	fn deserialize_bytes<V>(self, _visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		Err(Error::NotImplemented(format!("bytes")))
+	}
 }
