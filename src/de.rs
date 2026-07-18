@@ -278,6 +278,7 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	where
 		V: Visitor<'de>
 	{
+		self.skip_whitespaces_and_comments()?;
 		visitor.visit_borrowed_str(self.parse_string()?)
 	}
 
@@ -329,5 +330,12 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 		V: Visitor<'de>
 	{
 		visitor.visit_newtype_struct(self)
+	}
+
+	fn deserialize_seq<V>(self, _visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		return Err(Error::NotImplemented(format!("seq")));
 	}
 }
