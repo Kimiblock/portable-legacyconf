@@ -214,4 +214,14 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 			self.parse_signed()?
 		)
 	}
+
+	fn deserialize_u8<V>(self, visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		self.skip_whitespaces_and_comments()?;
+		visitor.visit_u8(
+			self.parse_unsigned()?
+		)
+	}
 }
