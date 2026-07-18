@@ -338,4 +338,12 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	{
 		return Err(Error::NotImplemented(format!("seq")));
 	}
+
+	fn deserialize_tuple<V>(self, _len: usize, _visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		return Err(Error::NotImplemented(format!("tuple")));
+	}
+
 }
