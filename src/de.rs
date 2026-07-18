@@ -357,4 +357,11 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	{
 		return Err(Error::NotImplemented(format!("tuple_struct")));
 	}
+
+	fn deserialize_map<V>(self, _visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		return Err(Error::NotImplemented(format!("map")));
+	}
 }
