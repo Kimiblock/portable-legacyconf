@@ -294,4 +294,11 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	{
 		Err(Error::NotImplemented(format!("byte_buf")))
 	}
+
+	fn deserialize_option<V>(self, _visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		Err(Error::NotImplemented("Option".to_string()))
+	}
 }
