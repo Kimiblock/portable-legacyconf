@@ -190,7 +190,7 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 		V: Visitor<'de>
 	{
 		self.skip_whitespaces_and_comments()?;
-		visitor.visit_i8(
+		visitor.visit_i16(
 			self.parse_signed()?
 		)
 	}
@@ -200,7 +200,17 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 		V: Visitor<'de>
 	{
 		self.skip_whitespaces_and_comments()?;
-		visitor.visit_i8(
+		visitor.visit_i32(
+			self.parse_signed()?
+		)
+	}
+
+	fn deserialize_i64<V>(self, visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		self.skip_whitespaces_and_comments()?;
+		visitor.visit_i64(
 			self.parse_signed()?
 		)
 	}
