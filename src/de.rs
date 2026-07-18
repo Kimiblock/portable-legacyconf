@@ -364,4 +364,16 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	{
 		return Err(Error::NotImplemented(format!("map")));
 	}
+
+	fn deserialize_struct<V>(
+		self,
+		_name: &'static str,
+		_fields: &'static [&'static str],
+		_visitor: V,
+	) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		Err(Error::NotImplemented(format!("struct")))
+	}
 }
