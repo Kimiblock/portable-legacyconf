@@ -113,10 +113,30 @@ impl <'de> Deserializer <'de> {
 			}
 		}
 	}
+
+	fn skip_whitespaces_and_comments(&mut self) -> Result<(), self::Error> {
+		loop {
+			match self.peek_char()? {
+				' ' | '\n' | '\t' | '\r'	=> {
+					self.next_char()?;
+				}
+				'#'				=> {
+					loop {
+						let result = self.next_char()?;
+						if result == '\n' {
+							break;
+						}
+					}
+				}
+				_				=> {}
+			}
+		}
+	}
 }
 
 impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	type Error = Error;
+
 
 	fn deserialize_any<V>(self, visitor: V) -> Result<V::Value, Self::Error>
 		where V: Visitor<'de>
