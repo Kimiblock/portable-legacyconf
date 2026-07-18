@@ -21,6 +21,9 @@ pub enum Error {
 
 	#[error("expected String with double quote")]
 	ExpectedString,
+
+	#[error("syntax error")]
+	SyntaxError,
 }
 
 impl serde::de::Error for Error {

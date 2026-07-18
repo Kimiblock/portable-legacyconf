@@ -114,3 +114,17 @@ impl <'de> Deserializer <'de> {
 		}
 	}
 }
+
+impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
+	type Error = Error;
+
+	fn deserialize_any<V>(self, visitor: V) -> Result<V::Value, Self::Error>
+		where V: Visitor<'de>
+	{
+		match self.peek_char() {
+			_	=> {
+				return Err(Error::SyntaxError);
+			}
+		}
+	}
+}
