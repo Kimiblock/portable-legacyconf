@@ -319,4 +319,15 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	{
 		Err(Error::NotImplemented(format!("unit_struct")))
 	}
+
+	fn deserialize_newtype_struct<V>(
+		self,
+		_name: &'static str,
+		visitor: V,
+	) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		visitor.visit_newtype_struct(self)
+	}
 }
