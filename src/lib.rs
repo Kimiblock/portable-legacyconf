@@ -1,5 +1,8 @@
 mod de;
 mod error;
+
+#[cfg(test)]
+mod test;
 //mod ser;
 
 pub use de::{from_str, Deserializer};
