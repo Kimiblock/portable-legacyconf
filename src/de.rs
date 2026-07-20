@@ -24,6 +24,7 @@ pub fn from_str<'a, T> (s: &'a str) -> Result<T, Error>
 {
 	let mut deserializer = Deserializer::from_str(s);
 	let t = T::deserialize(&mut deserializer)?;
+	deserializer.skip_whitespaces_and_comments()?;
 	if deserializer.input.is_empty() {
 		Ok(t)
 	} else {
@@ -358,7 +359,9 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	where
 		V: Visitor<'de>
 	{
-		visitor.visit_map(KVMapAccess::new(self.input))
+		let input = self.input;
+		self.input = "";
+		visitor.visit_map(KVMapAccess::new(input))
 	}
 
 	fn deserialize_struct<V>(
