@@ -93,6 +93,9 @@ impl <'de> Deserializer <'de> {
 
 	fn parse_string(&mut self) -> Result<&'de str, Error> {
 		self.skip_whitespaces_and_comments()?;
+		if self.input.is_empty() {
+			return Ok("");
+		}
 		match self.peek_char()? {
 			'"'	=> {
 				self.input = &self.input[1..];
