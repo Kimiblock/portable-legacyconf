@@ -365,7 +365,7 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	where
 		V: Visitor<'de>
 	{
-		return Err(Error::NotImplemented(format!("map")));
+		visitor.visit_map(KVMapAccess::new(self.input))
 	}
 
 	fn deserialize_struct<V>(
