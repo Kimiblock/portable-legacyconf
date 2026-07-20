@@ -143,23 +143,17 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 		where V: Visitor<'de>
 	{
 		self.skip_whitespaces_and_comments()?;
-		match self.peek_char()? {
-			'"'	=> {
-				let s = self.parse_string()?;
-				match s {
-					"true"	=> {
-						visitor.visit_bool(true)
-					}
-					"false"	=> {
-						visitor.visit_bool(false)
-					}
-					_	=> {
-						visitor.visit_str(s)
-					}
-				}
+		let s = self.parse_string()?;
+
+		match s {
+			"true"	=> {
+				visitor.visit_bool(true)
+			}
+			"false"	=> {
+				visitor.visit_bool(false)
 			}
 			_	=> {
-				return Err(Error::SyntaxError);
+				visitor.visit_str(s)
 			}
 		}
 	}
