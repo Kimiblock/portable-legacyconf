@@ -124,6 +124,9 @@ impl <'de> Deserializer <'de> {
 
 	fn skip_whitespaces_and_comments(&mut self) -> Result<(), self::Error> {
 		loop {
+			if self.input.is_empty() {
+				return Ok(());
+			}
 			match self.peek_char()? {
 				' ' | '\n' | '\t' | '\r'	=> {
 					self.next_char()?;
@@ -457,7 +460,7 @@ impl <'de> MapAccess<'de> for KVMapAccess<'de> {
 						.1
 						.trim_start_matches('"')
 						.trim_end_matches('"');
-					self.curr_val = Some(val);
+					self.curr_val = Some(val.trim());
 					let mut key = Deserializer { input: v.0 };
 
 					return seed
