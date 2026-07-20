@@ -387,4 +387,10 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	{
 		Err(Error::NotImplemented(format!("enum")))
 	}
+	fn deserialize_identifier<V>(self, visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		self.deserialize_str(visitor)
+	}
 }
