@@ -25,6 +25,9 @@ pub enum Error {
 	#[error("syntax error")]
 	SyntaxError,
 
+	#[error("incomplete string quote")]
+	IncompleteQuoteError,
+
 	#[error(".take() failed")]
 	TakeError,
 }

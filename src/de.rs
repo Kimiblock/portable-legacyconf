@@ -86,33 +86,30 @@ impl <'de> Deserializer <'de> {
 	}
 
 	fn parse_string(&mut self) -> Result<&'de str, Error> {
-		let has_quotes = {
-			match self.peek_char()? {
-				'"'	=> {
-					self.input = &self.input[1..];
-					true
-				},
-				_	=> false,
-			}
-		};
-
-		let result = {
-			if has_quotes {
-				self.input.find('"')
-			} else {
-				self.input.find("\n")
-			}
-		};
-
-		match result {
-			Some(v)	=> {
-				let s = &self.input[..v];
-				self.input = &self.input[v + 1..];
-				Ok(s)
-			}
-			None	=> {
-				Err(Error::EOF)
-			}
+		self.skip_whitespaces_and_comments()?;
+		match self.peek_char()? {
+			'"'	=> {
+				self.input = &self.input[1..];
+				match self.input.find('"') {
+					Some(v)	=> {
+						let s = &self.input[..v];
+						self.input = &self.input[v + 1..];
+						return Ok(s);
+					}
+					None	=> {
+						return Err(Error::IncompleteQuoteError);
+					}
+				};
+			},
+			_	=> {
+				let end = self
+					.input
+					.find('\n')
+					.unwrap_or(self.input.len());
+				let s = self.input[..end].trim();
+				self.input = &self.input[end..];
+				return Ok(s);
+			},
 		}
 	}
 
