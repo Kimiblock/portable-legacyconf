@@ -400,4 +400,11 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	{
 		self.deserialize_any(visitor)
 	}
+
+	fn deserialize_string<V>(self, visitor: V) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		self.deserialize_str(visitor)
+	}
 }
