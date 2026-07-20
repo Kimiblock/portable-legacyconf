@@ -376,4 +376,15 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 	{
 		Err(Error::NotImplemented(format!("struct")))
 	}
+	fn deserialize_enum<V>(
+		self,
+		_name: &'static str,
+		_variants: &'static [&'static str],
+		_visitor: V,
+	) -> Result<V::Value, Self::Error>
+	where
+		V: Visitor<'de>
+	{
+		Err(Error::NotImplemented(format!("enum")))
+	}
 }
