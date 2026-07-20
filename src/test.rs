@@ -50,6 +50,8 @@ allowInhibit="true"
 allowGlobalShortcuts="false"
 		"#;
 
+		println!("Testing against data: {data}");
+
 		let decoded: crate::test::TestStruct
 			= crate::from_str(data)?;
 		println!("Decoded legacy config: {decoded:#?}");

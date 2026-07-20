@@ -85,13 +85,12 @@ impl <'de> Deserializer <'de> {
 		Err(Error::NotImplemented(String::from("signed integer")))
 	}
 
-	fn parse_string (&mut self) -> Result<&'de str, Error> {
-		let has_quotes: bool;
-		if self.next_char()? != '"' {
-			// return Err(Error::ExpectedString)
-			has_quotes = true
-		} else {
-			has_quotes = false
+	fn parse_string(&mut self) -> Result<&'de str, Error> {
+		let has_quotes = {
+			match self.peek_char()? {
+				'"'	=> true,
+				_	=> false,
+			}
 		};
 
 		let result = {
