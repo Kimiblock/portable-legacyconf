@@ -28,6 +28,7 @@ pub fn from_str<'a, T> (s: &'a str) -> Result<T, Error>
 	if deserializer.input.is_empty() {
 		Ok(t)
 	} else {
+		eprintln!("Trailing characters: {}", deserializer.input);
 		Err(Error::TrailingCharacters)
 	}
 }
@@ -122,6 +123,18 @@ impl <'de> Deserializer <'de> {
 				}
 				'#'				=> {
 					loop {
+						match self.next_char() {
+							Ok('\n')	=> {
+								break;
+							}
+							Ok(_)		=> {}
+							Err(Error::EOF)	=> {
+								break;
+							}
+							Err(e)		=> {
+								return Err(e);
+							}
+						}
 						let result = self.next_char()?;
 						if result == '\n' {
 							break;
