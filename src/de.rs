@@ -453,4 +453,22 @@ impl <'de> MapAccess<'de> for KVMapAccess<'de> {
 		}
 		Ok(None)
 	}
+
+	fn next_value_seed<V>(&mut self, seed: V) -> Result<V::Value, Self::Error>
+	where
+		V: DeserializeSeed<'de>
+	{
+		let val = self
+			.curr_val
+			.take();
+		let mut val_de = {
+			match val {
+				Some(v)	=> Deserializer {input: v},
+				None	=> {
+					return Err(Error::TakeError)
+				}
+			}
+		};
+		seed.deserialize(&mut val_de)
+	}
 }

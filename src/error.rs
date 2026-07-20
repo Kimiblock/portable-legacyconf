@@ -24,6 +24,9 @@ pub enum Error {
 
 	#[error("syntax error")]
 	SyntaxError,
+
+	#[error(".take() failed")]
+	TakeError,
 }
 
 impl serde::de::Error for Error {
