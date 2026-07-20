@@ -88,7 +88,10 @@ impl <'de> Deserializer <'de> {
 	fn parse_string(&mut self) -> Result<&'de str, Error> {
 		let has_quotes = {
 			match self.peek_char()? {
-				'"'	=> true,
+				'"'	=> {
+					self.input = &self.input[1..];
+					true
+				},
 				_	=> false,
 			}
 		};
