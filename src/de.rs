@@ -43,13 +43,17 @@ impl <'de> Deserializer <'de> {
 		Ok(cha)
 	}
 	fn parse_bool(&mut self) -> Result<bool, Error> {
-		if self.input.starts_with("true")
-		|| self.input.starts_with("\"true\"") {
+		if self.input.starts_with("true") {
 			self.input = &self.input["true".len()..];
 			Ok(true)
-		} else if self.input.starts_with("false")
-		|| self.input.starts_with("\"false\""){
+		} else if self.input.starts_with("\"true\"") {
+			self.input = &self.input["\"true\"".len()..];
+			Ok(true)
+		} else if self.input.starts_with("false") {
 			self.input = &self.input["false".len()..];
+			Ok(true)
+		} else if self.input.starts_with("\"false\""){
+			self.input = &self.input["\"false\"".len()..];
 			Ok(false)
 		} else {
 			Err(Error::ExpectedBoolean)
