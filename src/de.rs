@@ -358,7 +358,10 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 		return Err(Error::NotImplemented(format!("tuple_struct")));
 	}
 
-	fn deserialize_map<V>(self, _visitor: V) -> Result<V::Value, Self::Error>
+	fn deserialize_map<V>(
+		self,
+		visitor: V,
+	) -> Result<V::Value, Self::Error>
 	where
 		V: Visitor<'de>
 	{
@@ -406,5 +409,48 @@ impl <'de, 'a> de::Deserializer <'de> for &'a mut Deserializer <'de> {
 		V: Visitor<'de>
 	{
 		self.deserialize_str(visitor)
+	}
+}
+
+struct KVMapAccess<'a> {
+	lines: std::str::Lines<'a>,
+	curr_val: Option<&'a str>,
+}
+
+impl<'a> KVMapAccess<'a> {
+	fn new(input: &'a str) -> Self {
+		Self { lines: input.lines(), curr_val: None }
+	}
+}
+
+impl <'de> MapAccess<'de> for KVMapAccess<'de> {
+	type Error = Error;
+
+	fn next_key_seed<K>(&mut self, seed: K) -> Result<Option<K::Value>, Self::Error>
+	where
+		K: DeserializeSeed<'de>
+	{
+		for line in self.lines.by_ref() {
+			let trimmed = line.trim();
+			if trimmed.is_empty() || trimmed.starts_with("#") {
+				continue;
+			};
+			match trimmed.split_once("=") {
+				Some(v)	=> {
+					let val = v
+						.1
+						.trim_start_matches('"')
+						.trim_end_matches('"');
+					self.curr_val = Some(val);
+					let mut key = Deserializer { input: v.0 };
+
+					return seed
+						.deserialize(&mut key)
+						.map(Some);
+				}
+				None	=> {}
+			};
+		}
+		Ok(None)
 	}
 }
