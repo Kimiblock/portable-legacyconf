@@ -51,7 +51,7 @@ impl <'de> Deserializer <'de> {
 			Ok(true)
 		} else if self.input.starts_with("false") {
 			self.input = &self.input["false".len()..];
-			Ok(true)
+			Ok(false)
 		} else if self.input.starts_with("\"false\""){
 			self.input = &self.input["\"false\"".len()..];
 			Ok(false)
