@@ -20,11 +20,9 @@ pub struct Config {
 	pub bind_network:	bool,
 
 	#[serde(alias = "waylandOnly")]
+	#[serde(default = "default_true")]
 	#[serde(deserialize_with = "deserialize_wayland")]
 	pub wayland:		bool,
-
-	#[serde(alias = "allowGlobalShortcuts")]
-	pub shortcuts:	bool,
 
 	#[serde(alias = "gameMode")]
 	pub game:		bool,
@@ -45,7 +43,12 @@ pub struct Config {
 	pub tray_wake:	bool,
 
 	#[serde(alias = "mountInfo")]
+	#[serde(default = "default_true")]
 	pub flatpak_info:	bool,
+}
+
+fn default_true () -> bool {
+	true
 }
 
 fn deserialize_wayland <'de, D> (deserializer: D) -> Result<bool, D::Error>
