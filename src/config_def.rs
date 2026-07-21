@@ -20,7 +20,8 @@ pub struct Config {
 	pub bind_network:	bool,
 
 	#[serde(alias = "waylandOnly")]
-	pub wayland:	String,
+	#[serde(deserialize_with = "deserialize_wayland")]
+	pub wayland:		bool,
 
 	#[serde(alias = "allowGlobalShortcuts")]
 	pub shortcuts:	bool,
@@ -45,6 +46,24 @@ pub struct Config {
 
 	#[serde(alias = "mountInfo")]
 	pub flatpak_info:	bool,
+}
+
+fn deserialize_wayland <'de, D> (deserializer: D) -> Result<bool, D::Error>
+	where
+		D: Deserializer<'de>
+{
+	let raw = String::deserialize(deserializer)?;
+	match raw.as_str() {
+		"adaptive" | "true"	=> {
+			Ok(true)
+		}
+		"false"			=> {
+			Ok(false)
+		}
+		_v			=> {
+			Err(D::Error::custom("invalid waylandOnly value: {_v}"))
+		}
+	}
 }
 
 // Returns the Target and arguments, separated with spaces
