@@ -1,5 +1,6 @@
 mod de;
 mod error;
+mod config_def;
 
 #[cfg(test)]
 mod test;
