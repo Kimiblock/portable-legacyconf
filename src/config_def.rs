@@ -34,7 +34,11 @@ fn deserialize_target <'de, D> (deserializer: D) -> Result<(String, Option<Vec<S
 	where
 		D: Deserializer<'de>,
 {
-	let raw = Vec::<String>::deserialize(deserializer)?;
+	let deserialize = String::deserialize(deserializer)?;
+	let raw: Vec<&str> = {
+		deserialize.split(" ").collect()
+	};
+
 	match raw.len() {
 		0	=> {
 			return Err(D::Error::custom("target not found"));
@@ -43,7 +47,7 @@ fn deserialize_target <'de, D> (deserializer: D) -> Result<(String, Option<Vec<S
 			let target = raw.into_iter().next();
 			match target {
 				Some(v)	=> {
-					return Ok((v, None));
+					return Ok((v.into(), None));
 				}
 				None	=> {
 					return Err(D::Error::custom("error decoding target"));
@@ -63,11 +67,11 @@ fn deserialize_target <'de, D> (deserializer: D) -> Result<(String, Option<Vec<S
 					}
 				}
 			};
-			let mut args = vec![];
+			let mut args: Vec<String> = vec![];
 			for arg in iter {
-				args.push(arg);
+				args.push(arg.into());
 			};
-			return Ok((target, Some(args)));
+			return Ok((target.into(), Some(args)));
 		}
 	}
 }
