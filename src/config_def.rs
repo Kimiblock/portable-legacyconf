@@ -4,47 +4,47 @@ use serde::de::Error;
 #[derive(Debug, Deserialize, Clone)]
 pub struct Config {
 	#[serde(alias = "appID")]
-	app_id:		String,
+	pub app_id:		String,
 
 	#[serde(alias = "friendlyName")]
-	friendly_name:	String,
+	pub friendly_name:	String,
 
 	#[serde(alias = "stateDirectory")]
-	state_dir:	String,
+	pub state_dir:	String,
 
 	#[serde(alias = "launchTarget")]
 	#[serde(deserialize_with = "deserialize_target")]
-	target:		(String, Option<Vec<String>>),
+	pub target:		(String, Option<Vec<String>>),
 
 	#[serde(alias = "bindNetwork")]
-	bind_network:	bool,
+	pub bind_network:	bool,
 
 	#[serde(alias = "waylandOnly")]
-	wayland:	String,
+	pub wayland:	String,
 
 	#[serde(alias = "allowGlobalShortcuts")]
-	shortcuts:	bool,
+	pub shortcuts:	bool,
 
 	#[serde(alias = "gameMode")]
-	game:		bool,
+	pub game:		bool,
 
 	#[serde(alias = "useZink")]
-	zink:		bool,
+	pub zink:		bool,
 
 	#[serde(alias = "qt5Compat")]
-	qt5:		bool,
+	pub qt5:		bool,
 
 	#[serde(alias = "bindCameras")]
-	camera:		bool,
+	pub camera:		bool,
 
 	#[serde(alias = "bindInputDevices")]
-	input_dev:	bool,
+	pub input_dev:	bool,
 
 	#[serde(alias = "dbusWake")]
-	tray_wake:	bool,
+	pub tray_wake:	bool,
 
 	#[serde(alias = "mountInfo")]
-	flatpak_info:	bool,
+	pub flatpak_info:	bool,
 }
 
 // Returns the Target and arguments, separated with spaces
