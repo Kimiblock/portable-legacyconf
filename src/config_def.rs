@@ -27,6 +27,24 @@ pub struct Config {
 
 	#[serde(alias = "gameMode")]
 	game:		bool,
+
+	#[serde(alias = "useZink")]
+	zink:		bool,
+
+	#[serde(alias = "qt5Compat")]
+	qt5:		bool,
+
+	#[serde(alias = "bindCameras")]
+	camera:		bool,
+
+	#[serde(alias = "bindInputDevices")]
+	input_dev:	bool,
+
+	#[serde(alias = "dbusWake")]
+	tray_wake:	bool,
+
+	#[serde(alias = "mountInfo")]
+	flatpak_info:	bool,
 }
 
 // Returns the Target and arguments, separated with spaces
