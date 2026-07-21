@@ -5,6 +5,24 @@ use serde::{Deserialize};
 struct TestStruct {
 	#[serde(alias = "appID")]
 	app_id:		String,
+
+	#[serde(alias = "friendlyName")]
+	friendly_name:	String,
+
+	#[serde(alias = "stateDirectory")]
+	state_dir:	String,
+
+	#[serde(alias = "launchTarget")]
+	target:		String,
+
+	#[serde(alias = "bindNetwork")]
+	bind_network:	bool,
+
+	#[serde(alias = "waylandOnly")]
+	wayland:	String,
+
+	#[serde(alias = "gameMode")]
+	game:		bool,
 }
 
 #[cfg(test)]
@@ -56,6 +74,12 @@ allowGlobalShortcuts="false"
 			= crate::from_str(data)?;
 		println!("Decoded legacy config: {decoded:#?}");
 		assert_eq!(decoded.app_id, "cafe.avery.Delfin");
+		assert_eq!(decoded.friendly_name, "Delfin");
+		assert_eq!(decoded.state_dir, "Delfin_Data");
+		assert_eq!(decoded.target, "delfin");
+		assert_eq!(decoded.bind_network, true);
+		assert_eq!(decoded.wayland, "adaptive");
+		assert_eq!(decoded.game, false);
 		Ok(())
 	}
 }
