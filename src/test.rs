@@ -21,6 +21,9 @@ struct TestStruct {
 	#[serde(alias = "waylandOnly")]
 	wayland:	String,
 
+	#[serde(alias = "allowGlobalShortcuts")]
+	shortcuts:	bool,
+
 	#[serde(alias = "gameMode")]
 	game:		bool,
 }
@@ -79,6 +82,7 @@ allowGlobalShortcuts="false"
 		assert_eq!(decoded.target, "delfin");
 		assert_eq!(decoded.bind_network, true);
 		assert_eq!(decoded.wayland, "adaptive");
+		assert_eq!(decoded.shortcuts, false);
 		assert_eq!(decoded.game, false);
 		Ok(())
 	}
