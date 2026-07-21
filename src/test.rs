@@ -55,6 +55,7 @@ allowGlobalShortcuts="false"
 		let decoded: crate::test::TestStruct
 			= crate::from_str(data)?;
 		println!("Decoded legacy config: {decoded:#?}");
+		assert_eq!(decoded.app_id, "cafe.avery.Delfin");
 		Ok(())
 	}
 }
